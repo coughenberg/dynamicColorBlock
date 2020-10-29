@@ -1,0 +1,8 @@
+<p style="font-size: 80px;">HELLO FROM THE (large) SQUARE ON THE OTHER SIDE</p>
+<ng-container *ngFor="let line of squareElements; let i = index">
+    <ng-container *ngFor="let element of line; let j = index">
+        <!-- <element-square [upper]="" [upperRight]="" [right]="" [bottomRight]="" [bottom]="" [bottomLeft]="" [left]="" [upperLeft]=""></element-square> -->
+        <element-square [clicked]="getClicked(i, j)" [heightPlaced]="i" [widthPlaced]="j" [parentClick]="getparentClick(i, j)" (newClick)="displayClickedFromParent($event)"></element-square>
+    </ng-container>
+    <br>
+</ng-container>
