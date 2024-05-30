@@ -1,0 +1,13 @@
+<div>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="grid-formgroup">
+      <div class="slider">
+        <mat-label>Grid Size</mat-label>
+        <mat-slider min="4" max="20" step="1" tickInterval="1" discrete>
+          <input matSliderThumb formControlName="gridSize" />
+        </mat-slider>
+      </div>
+      <button class="submit-button" mat-raised-button color="primary" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
