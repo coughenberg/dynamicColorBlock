@@ -2,30 +2,30 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'element-square',
+  selector: 'app-ripple-element',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: 'element-square.component.html',
-  styleUrls: ['./element-square.component.css'],
+  templateUrl: 'ripple-element.component.html',
+  styleUrls: ['./ripple-element.component.css'],
 })
-export class SquareElement implements OnInit {
+export class RippleElement implements OnInit {
   /**
-   * Height the element was placed
+   * Row the element was placed
    */
   @Input()
-  heightPlaced: number = 0;
+  rowPlaced: number = 0;
 
   /**
-   * Width the element was placed
+   * Column the element was placed
    */
   @Input()
-  widthPlaced: number = 0;
+  columnPlaced: number = 0;
 
   /**
-   * True if the parent class has clicked this element
+   * True if this square is enabled from being clicked or the ripple outwards
    */
   @Input()
-  parentClick: boolean = false;
+  isSquareEnabled: boolean = false;
 
   /**
    * Whether the button was clicked or not
@@ -37,7 +37,7 @@ export class SquareElement implements OnInit {
    * Tells parent which element has been clicked
    */
   @Output()
-  newClick = new EventEmitter<SquareElement>();
+  newClick = new EventEmitter<RippleElement>();
 
   constructor() {}
 
