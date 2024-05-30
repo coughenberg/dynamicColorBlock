@@ -1,6 +1,6 @@
-.rainbow-text {
-    font-size: 4em;
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.main-page-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2em;
 }

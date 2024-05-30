@@ -1,0 +1,9 @@
+<mat-drawer-container class="drawer-container">
+  <mat-drawer class="drawer" #drawer mode="side" opened>
+    <mat-toolbar color="primary">Grid Controls</mat-toolbar>
+    <app-grid-form></app-grid-form>
+  </mat-drawer>
+  <mat-drawer-content class="drawer-content">
+    <button mat-raised-button (click)="drawer.toggle()">Toggle Grid Controls</button>
+  </mat-drawer-content>
+</mat-drawer-container>
