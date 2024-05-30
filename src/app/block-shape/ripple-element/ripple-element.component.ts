@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'element-square',
+  selector: 'app-ripple-element',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: 'element-square.component.html',
-  styleUrls: ['./element-square.component.css'],
+  templateUrl: 'ripple-element.component.html',
+  styleUrls: ['./ripple-element.component.css'],
 })
-export class SquareElement implements OnInit {
+export class RippleElement implements OnInit {
   /**
    * Row the element was placed
    */
@@ -37,7 +37,7 @@ export class SquareElement implements OnInit {
    * Tells parent which element has been clicked
    */
   @Output()
-  newClick = new EventEmitter<SquareElement>();
+  newClick = new EventEmitter<RippleElement>();
 
   constructor() {}
 

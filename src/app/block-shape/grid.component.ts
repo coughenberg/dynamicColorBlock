@@ -1,20 +1,20 @@
-import { SquareElement } from './square_element/element-square.component';
+import { RippleElement } from './ripple-element/ripple-element.component';
 import { Component, ContentChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export interface elementPlacementInterface {
+interface elementPlacementInterface {
   row: number;
   column: number;
 }
 
 @Component({
-  selector: 'large-square',
+  selector: 'app-grid',
   standalone: true,
-  imports: [CommonModule, SquareElement],
-  templateUrl: './large-square.component.html',
-  styleUrls: ['./large-square.component.css'],
+  imports: [CommonModule, RippleElement],
+  templateUrl: './grid.component.html',
+  styleUrls: ['./grid.component.css'],
 })
-export class LargeSquareComponent implements OnInit {
+export class GridComponent implements OnInit {
   /**
    * Total row of the large square
    */
@@ -28,7 +28,7 @@ export class LargeSquareComponent implements OnInit {
   /**
    * Double list of the laid out elements in the square
    */
-  squareElements: SquareElement[][] = [];
+  rippleElements: RippleElement[][] = [];
 
   /**
    * Origin of the initial click
@@ -44,7 +44,7 @@ export class LargeSquareComponent implements OnInit {
   isSquareEnabledSquaresToFalsify: elementPlacementInterface[] = [];
 
   constructor() {
-    this.makeSquareElementsArray();
+    this.makeRippleElementsArray();
   }
 
   ngOnInit() {}
@@ -55,30 +55,30 @@ export class LargeSquareComponent implements OnInit {
    * @param changeArray - Squares that need to make the outline
    * @param repeating - Temp variable to stop the timer from infinitely repeating
    */
-  makeSquareElementsArray(
+  makeRippleElementsArray(
     changeArray?: elementPlacementInterface[],
     repeating?: boolean
   ) {
-    const squareElements: SquareElement[][] = [];
-    for (var i: number = 0; i < LargeSquareComponent.TOTAL_ROW; i++) {
-      squareElements[i] = [];
-      for (var j: number = 0; j < LargeSquareComponent.TOTAL_COLUMN; j++) {
-        squareElements[i].push(new SquareElement());
-        squareElements[i][j].rowPlaced = i;
-        squareElements[i][j].columnPlaced = j;
-        squareElements[i][j].clicked = false;
-        // squareElements[i][j].clicked = this.squareElements && this.squareElements[i] && this.squareElements[i][j] && this.squareElements[i][j].clicked ? this.squareElements[i][j].clicked : false;
+    const rippleElements: RippleElement[][] = [];
+    for (var i: number = 0; i < GridComponent.TOTAL_ROW; i++) {
+      rippleElements[i] = [];
+      for (var j: number = 0; j < GridComponent.TOTAL_COLUMN; j++) {
+        rippleElements[i].push(new RippleElement());
+        rippleElements[i][j].rowPlaced = i;
+        rippleElements[i][j].columnPlaced = j;
+        rippleElements[i][j].clicked = false;
+        // rippleElements[i][j].clicked = this.rippleElements && this.rippleElements[i] && this.rippleElements[i][j] && this.rippleElements[i][j].clicked ? this.rippleElements[i][j].clicked : false;
       }
     }
 
-    this.squareElements = squareElements;
+    this.rippleElements = rippleElements;
     let upperLeftMostTile: elementPlacementInterface = {
-      row: LargeSquareComponent.TOTAL_ROW,
-      column: LargeSquareComponent.TOTAL_COLUMN,
+      row: GridComponent.TOTAL_ROW,
+      column: GridComponent.TOTAL_COLUMN,
     };
     if (changeArray && changeArray.length > 0) {
       changeArray.forEach((change) => {
-        this.squareElements[change.row][change.column].isSquareEnabled = true;
+        this.rippleElements[change.row][change.column].isSquareEnabled = true;
         if (change.row <= upperLeftMostTile.row) {
           upperLeftMostTile.row = change.row;
           if (change.column < upperLeftMostTile.column) {
@@ -239,22 +239,22 @@ export class LargeSquareComponent implements OnInit {
       if (isHorizontalMoving) {
         if (
           origin.row >= 0 &&
-          origin.row < LargeSquareComponent.TOTAL_ROW &&
+          origin.row < GridComponent.TOTAL_ROW &&
           origin.column + movementRadius >= 0 &&
-          origin.column + movementRadius < LargeSquareComponent.TOTAL_COLUMN
+          origin.column + movementRadius < GridComponent.TOTAL_COLUMN
         ) {
-          this.squareElements[origin.row][
+          this.rippleElements[origin.row][
             origin.column + movementRadius
           ].isSquareEnabled = hasColor;
         }
       } else {
         if (
           origin.row + movementRadius >= 0 &&
-          origin.row + movementRadius < LargeSquareComponent.TOTAL_ROW &&
+          origin.row + movementRadius < GridComponent.TOTAL_ROW &&
           origin.column >= 0 &&
-          origin.column < LargeSquareComponent.TOTAL_COLUMN
+          origin.column < GridComponent.TOTAL_COLUMN
         ) {
-          this.squareElements[origin.row + movementRadius][
+          this.rippleElements[origin.row + movementRadius][
             origin.column
           ].isSquareEnabled = hasColor;
         }
@@ -267,8 +267,8 @@ export class LargeSquareComponent implements OnInit {
    *
    * @param elementClicked - The button that has been pressed
    */
-  startRipple(elementClicked: SquareElement) {
-    this.squareElements[elementClicked.rowPlaced][
+  startRipple(elementClicked: RippleElement) {
+    this.rippleElements[elementClicked.rowPlaced][
       elementClicked.columnPlaced
     ].clicked = true;
     this.origin = {
@@ -281,10 +281,10 @@ export class LargeSquareComponent implements OnInit {
       bottomRight: this.origin,
       topRight: this.origin,
     };
-    for (let index = 1; index <= LargeSquareComponent.TOTAL_ROW; index++) {
+    for (let index = 1; index <= GridComponent.TOTAL_ROW; index++) {
       setTimeout(() => {
         if (index === 1) {
-          this.squareElements[elementClicked.rowPlaced][
+          this.rippleElements[elementClicked.rowPlaced][
             elementClicked.columnPlaced
           ].clicked = false;
         }
@@ -302,14 +302,14 @@ export class LargeSquareComponent implements OnInit {
    */
   getSquareEnabled(row: number, column: number): boolean {
     if (
-      this.squareElements[row + 1] &&
-      this.squareElements[row + 1][column + 1] &&
-      this.squareElements[row + 1][column + 1].isSquareEnabled
+      this.rippleElements[row + 1] &&
+      this.rippleElements[row + 1][column + 1] &&
+      this.rippleElements[row + 1][column + 1].isSquareEnabled
     ) {
-      this.squareElements[row + 1][column + 1].isSquareEnabled = true;
+      this.rippleElements[row + 1][column + 1].isSquareEnabled = true;
     }
-    return this.squareElements[row][column].isSquareEnabled != null
-      ? this.squareElements[row][column].isSquareEnabled
+    return this.rippleElements[row][column].isSquareEnabled != null
+      ? this.rippleElements[row][column].isSquareEnabled
       : false;
   }
 
@@ -321,6 +321,6 @@ export class LargeSquareComponent implements OnInit {
    * @param column - Column of current button
    */
   getClicked(row: number, column: number): boolean {
-    return this.squareElements[row][column].clicked;
+    return this.rippleElements[row][column].clicked;
   }
 }
