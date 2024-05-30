@@ -10,22 +10,22 @@ import { CommonModule } from '@angular/common';
 })
 export class SquareElement implements OnInit {
   /**
-   * Height the element was placed
+   * Row the element was placed
    */
   @Input()
-  heightPlaced: number = 0;
+  rowPlaced: number = 0;
 
   /**
-   * Width the element was placed
+   * Column the element was placed
    */
   @Input()
-  widthPlaced: number = 0;
+  columnPlaced: number = 0;
 
   /**
-   * True if the parent class has clicked this element
+   * True if this square is enabled from being clicked or the ripple outwards
    */
   @Input()
-  parentClick: boolean = false;
+  isSquareEnabled: boolean = false;
 
   /**
    * Whether the button was clicked or not
