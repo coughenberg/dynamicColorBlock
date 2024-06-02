@@ -1,14 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import {
+  GridForm,
+  GridFormState,
+} from '../../../store/grid-form/grid-form.reducer';
+import { Observable } from 'rxjs';
+import { selectGridFormData } from '../../../store/grid-form/grid-form.selectors';
 
 @Component({
   selector: 'app-ripple-element',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: 'ripple-element.component.html',
   styleUrls: ['./ripple-element.component.css'],
 })
 export class RippleElement implements OnInit {
+  formData$!: Observable<GridForm | null>;
+
   /**
    * Row the element was placed
    */
@@ -39,9 +45,31 @@ export class RippleElement implements OnInit {
   @Output()
   newClick = new EventEmitter<RippleElement>();
 
-  constructor() {}
+  /**
+   * The base color of the clickable area.
+   */
+  baseColor: string = 'blue';
 
-  ngOnInit() {}
+  /**
+   * The ripple color of the clickable area.
+   */
+  rippleColor: string = 'red';
+
+  constructor(private store: Store<{ form: GridFormState }>) {}
+
+  ngOnInit() {
+    this.formData$ = this.store.select(selectGridFormData);
+    this.formData$.subscribe((data) => {
+      console.warn(data);
+      if (!data) return;
+      if (data.baseColor) {
+        this.baseColor = data.baseColor;
+      }
+      if (data.rippleColor) {
+        this.rippleColor = data.rippleColor;
+      }
+    });
+  }
 
   givePlacement(): void {
     this.clicked = !this.clicked;

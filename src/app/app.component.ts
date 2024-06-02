@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { GridComponent } from './block-shape/grid.component';
-import { SidebarModule } from './sidebar/sidebar.module';
+import { SidebarModule } from './components/sidebar/sidebar.module';
+import { GridModule } from './components/block-shape/grid.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [GridComponent, RouterOutlet, SidebarModule],
+  imports: [
+    RouterOutlet,
+    SidebarModule,
+    GridModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
