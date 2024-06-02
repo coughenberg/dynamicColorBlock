@@ -10,6 +10,8 @@ import { GridFormComponent } from './grid-form/grid-form.component';
 import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { StoreModule } from '@ngrx/store';
+import { gridFormReducer } from '../../store/grid-form/grid-form.reducer';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatInputModule,
     MatButtonModule,
     MatSliderModule,
+    StoreModule.forRoot({ gridFormData: gridFormReducer }),
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule

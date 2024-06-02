@@ -1,6 +1,12 @@
 import { RippleElement } from './ripple-element/ripple-element.component';
-import { Component, ContentChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import {
+  GridForm,
+  GridFormState,
+} from '../../store/grid-form/grid-form.reducer';
+import { Observable } from 'rxjs';
+import { selectGridFormData } from '../../store/grid-form/grid-form.selectors';
 
 interface elementPlacementInterface {
   row: number;
@@ -9,21 +15,31 @@ interface elementPlacementInterface {
 
 @Component({
   selector: 'app-grid',
-  standalone: true,
-  imports: [CommonModule, RippleElement],
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css'],
 })
 export class GridComponent implements OnInit {
-  /**
-   * Total row of the large square
-   */
-  static readonly TOTAL_ROW = 8;
+  formData$!: Observable<GridForm | null>;
+
+  // /**
+  //  * Total row of the large square
+  //  */
+  // static readonly TOTAL_ROW = 8;
+
+  // /**
+  //  * Total column of the large square
+  //  */
+  // static readonly TOTAL_COLUMN = 8;
 
   /**
-   * Total column of the large square
+   * Total row of the large square.
    */
-  static readonly TOTAL_COLUMN = 8;
+  totalRows: number = 8;
+
+  /**
+   * Total column of the large square.
+   */
+  totalColumns: number = 8;
 
   /**
    * Double list of the laid out elements in the square
@@ -43,11 +59,19 @@ export class GridComponent implements OnInit {
    */
   isSquareEnabledSquaresToFalsify: elementPlacementInterface[] = [];
 
-  constructor() {
-    this.makeRippleElementsArray();
-  }
+  constructor(private store: Store<{ form: GridFormState }>) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.makeRippleElementsArray();
+    this.formData$ = this.store.select(selectGridFormData);
+    this.formData$.subscribe((data) => {
+      console.warn(data);
+      if (!data) return;
+      this.totalRows = data.gridSize;
+      this.totalColumns = data.gridSize;
+      this.makeRippleElementsArray();
+    });
+  }
 
   /**
    * Makes the square elements array and initializes each element
@@ -55,26 +79,22 @@ export class GridComponent implements OnInit {
    * @param changeArray - Squares that need to make the outline
    * @param repeating - Temp variable to stop the timer from infinitely repeating
    */
-  makeRippleElementsArray(
-    changeArray?: elementPlacementInterface[],
-    repeating?: boolean
-  ) {
+  makeRippleElementsArray(changeArray?: elementPlacementInterface[]) {
     const rippleElements: RippleElement[][] = [];
-    for (var i: number = 0; i < GridComponent.TOTAL_ROW; i++) {
+    for (var i: number = 0; i < this.totalRows; i++) {
       rippleElements[i] = [];
-      for (var j: number = 0; j < GridComponent.TOTAL_COLUMN; j++) {
-        rippleElements[i].push(new RippleElement());
+      for (var j: number = 0; j < this.totalColumns; j++) {
+        rippleElements[i].push(new RippleElement(this.store));
         rippleElements[i][j].rowPlaced = i;
         rippleElements[i][j].columnPlaced = j;
         rippleElements[i][j].clicked = false;
-        // rippleElements[i][j].clicked = this.rippleElements && this.rippleElements[i] && this.rippleElements[i][j] && this.rippleElements[i][j].clicked ? this.rippleElements[i][j].clicked : false;
       }
     }
 
-    this.rippleElements = rippleElements;
+    this.rippleElements = [...rippleElements];
     let upperLeftMostTile: elementPlacementInterface = {
-      row: GridComponent.TOTAL_ROW,
-      column: GridComponent.TOTAL_COLUMN,
+      row: this.totalRows,
+      column: this.totalColumns,
     };
     if (changeArray && changeArray.length > 0) {
       changeArray.forEach((change) => {
@@ -83,7 +103,6 @@ export class GridComponent implements OnInit {
           upperLeftMostTile.row = change.row;
           if (change.column < upperLeftMostTile.column) {
             upperLeftMostTile.column = change.column;
-            console.log(change.column);
           }
         }
       });
@@ -239,9 +258,9 @@ export class GridComponent implements OnInit {
       if (isHorizontalMoving) {
         if (
           origin.row >= 0 &&
-          origin.row < GridComponent.TOTAL_ROW &&
+          origin.row < this.totalRows &&
           origin.column + movementRadius >= 0 &&
-          origin.column + movementRadius < GridComponent.TOTAL_COLUMN
+          origin.column + movementRadius < this.totalColumns
         ) {
           this.rippleElements[origin.row][
             origin.column + movementRadius
@@ -250,9 +269,9 @@ export class GridComponent implements OnInit {
       } else {
         if (
           origin.row + movementRadius >= 0 &&
-          origin.row + movementRadius < GridComponent.TOTAL_ROW &&
+          origin.row + movementRadius < this.totalRows &&
           origin.column >= 0 &&
-          origin.column < GridComponent.TOTAL_COLUMN
+          origin.column < this.totalColumns
         ) {
           this.rippleElements[origin.row + movementRadius][
             origin.column
@@ -281,7 +300,7 @@ export class GridComponent implements OnInit {
       bottomRight: this.origin,
       topRight: this.origin,
     };
-    for (let index = 1; index <= GridComponent.TOTAL_ROW; index++) {
+    for (let index = 1; index <= this.totalRows; index++) {
       setTimeout(() => {
         if (index === 1) {
           this.rippleElements[elementClicked.rowPlaced][
