@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { GridFormState } from '../../../store/grid-form/grid-form.reducer';
 import { submitGridForm } from '../../../store/grid-form/grid-form.actions';
+import { GridFormState } from '../../../store/grid-form/grid-form.reducer';
 
 @Component({
   selector: 'app-grid-form',
@@ -20,7 +17,7 @@ export class GridFormComponent {
     rippleColor: new FormControl('lightseagreen', { nonNullable: true }),
     rippleSpeed: new FormControl(75, { nonNullable: true }),
     hasBorder: new FormControl(false, { nonNullable: true }),
-  }
+  };
   formGroup: FormGroup<{
     gridHeight: FormControl<number>;
     gridWidth: FormControl<number>;
@@ -32,7 +29,6 @@ export class GridFormComponent {
 
   constructor(private store: Store<{ form: GridFormState }>) {}
 
-  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.formGroup.valid) {

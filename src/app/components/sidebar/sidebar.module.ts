@@ -24,7 +24,7 @@ import { gridFormReducer } from '../../store/grid-form/grid-form.reducer';
     MatButtonModule,
     MatSliderModule,
     MatSlideToggleModule,
-    StoreModule.forRoot({ gridFormData: gridFormReducer }),
+    StoreModule.forFeature('gridFormData', gridFormReducer),
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,

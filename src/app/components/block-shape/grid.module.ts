@@ -7,16 +7,13 @@ import { GridComponent } from './grid.component';
 import { RippleElement } from './ripple-element/ripple-element.component';
 
 @NgModule({
-  declarations: [
-    GridComponent,
-    RippleElement,
-  ],
+  declarations: [GridComponent, RippleElement],
   imports: [
     CommonModule,
-    StoreModule.forRoot({ gridFormData: gridFormReducer }),
+    StoreModule.forFeature('gridFormData', gridFormReducer),
   ],
   exports: [GridComponent],
   providers: [],
-  bootstrap: []
+  bootstrap: [],
 })
-export class GridModule { }
+export class GridModule {}
