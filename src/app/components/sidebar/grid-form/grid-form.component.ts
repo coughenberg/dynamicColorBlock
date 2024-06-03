@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import {
-  GridForm,
-  GridFormState,
-} from '../../../store/grid-form/grid-form.reducer';
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { GridFormState } from '../../../store/grid-form/grid-form.reducer';
 import { submitGridForm } from '../../../store/grid-form/grid-form.actions';
 
 @Component({
@@ -13,26 +13,40 @@ import { submitGridForm } from '../../../store/grid-form/grid-form.actions';
   styleUrl: './grid-form.component.css',
 })
 export class GridFormComponent {
-  formGroup!: FormGroup;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private store: Store<{ form: GridFormState }>
-  ) {}
-
-  ngOnInit(): void {
-    this.formGroup = this.formBuilder.group({
-      gridSize: [8, [Validators.min(0), Validators.max(100)]],
-      baseColor: [''],
-      rippleColor: [''],
-    });
+  static readonly DEFAULT_FORM = {
+    gridHeight: new FormControl(8, { nonNullable: true }),
+    gridWidth: new FormControl(8, { nonNullable: true }),
+    baseColor: new FormControl('lightcyan', { nonNullable: true }),
+    rippleColor: new FormControl('lightseagreen', { nonNullable: true }),
+    rippleSpeed: new FormControl(75, { nonNullable: true }),
+    hasBorder: new FormControl(false, { nonNullable: true }),
   }
+  formGroup: FormGroup<{
+    gridHeight: FormControl<number>;
+    gridWidth: FormControl<number>;
+    baseColor: FormControl<string>;
+    rippleColor: FormControl<string>;
+    rippleSpeed: FormControl<number>;
+    hasBorder: FormControl<boolean>;
+  }> = new FormGroup(GridFormComponent.DEFAULT_FORM);
+
+  constructor(private store: Store<{ form: GridFormState }>) {}
+
+  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.formGroup.valid) {
-      console.warn(this.formGroup.value);
       this.store.dispatch(
-        submitGridForm({ gridFormData: this.formGroup.value })
+        submitGridForm({
+          gridFormData: {
+            gridHeight: this.formGroup.controls.gridHeight.value,
+            gridWidth: this.formGroup.controls.gridWidth.value,
+            baseColor: this.formGroup.controls.baseColor.value,
+            rippleColor: this.formGroup.controls.rippleColor.value,
+            rippleSpeed: this.formGroup.controls.rippleSpeed.value,
+            hasBorder: this.formGroup.controls.hasBorder.value,
+          },
+        })
       );
     }
   }

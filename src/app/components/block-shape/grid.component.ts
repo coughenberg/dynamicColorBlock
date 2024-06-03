@@ -1,12 +1,10 @@
 import { RippleElement } from './ripple-element/ripple-element.component';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  GridForm,
-  GridFormState,
-} from '../../store/grid-form/grid-form.reducer';
+import { GridFormState } from '../../store/grid-form/grid-form.reducer';
 import { Observable } from 'rxjs';
 import { selectGridFormData } from '../../store/grid-form/grid-form.selectors';
+import { GridForm } from '../../models/grid-form.model';
 
 interface elementPlacementInterface {
   row: number;
@@ -21,16 +19,6 @@ interface elementPlacementInterface {
 export class GridComponent implements OnInit {
   formData$!: Observable<GridForm | null>;
 
-  // /**
-  //  * Total row of the large square
-  //  */
-  // static readonly TOTAL_ROW = 8;
-
-  // /**
-  //  * Total column of the large square
-  //  */
-  // static readonly TOTAL_COLUMN = 8;
-
   /**
    * Total row of the large square.
    */
@@ -40,6 +28,11 @@ export class GridComponent implements OnInit {
    * Total column of the large square.
    */
   totalColumns: number = 8;
+
+  /**
+   * Speed of the ripple.
+   */
+  rippleSpeed: number = 75;
 
   /**
    * Double list of the laid out elements in the square
@@ -65,10 +58,10 @@ export class GridComponent implements OnInit {
     this.makeRippleElementsArray();
     this.formData$ = this.store.select(selectGridFormData);
     this.formData$.subscribe((data) => {
-      console.warn(data);
       if (!data) return;
-      this.totalRows = data.gridSize;
-      this.totalColumns = data.gridSize;
+      this.totalRows = data.gridHeight;
+      this.totalColumns = data.gridWidth;
+      this.rippleSpeed = data.rippleSpeed;
       this.makeRippleElementsArray();
     });
   }
@@ -300,7 +293,7 @@ export class GridComponent implements OnInit {
       bottomRight: this.origin,
       topRight: this.origin,
     };
-    for (let index = 1; index <= this.totalRows; index++) {
+    for (let index = 1; index <= this.totalRows || index <= this.totalColumns; index++) {
       setTimeout(() => {
         if (index === 1) {
           this.rippleElements[elementClicked.rowPlaced][
@@ -308,7 +301,7 @@ export class GridComponent implements OnInit {
           ].clicked = false;
         }
         this.colorOutterSides(outerLimit, index);
-      }, index * 75);
+      }, index * this.rippleSpeed);
     }
   }
 

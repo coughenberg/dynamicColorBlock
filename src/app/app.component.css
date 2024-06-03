@@ -1,6 +1,9 @@
 .main-page-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 2em;
+  .grid-section {
+    margin-bottom: 2em;
+  }
 }

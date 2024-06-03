@@ -6,8 +6,5 @@ export const selectGridFormState =
 
 export const selectGridFormData = createSelector(
   selectGridFormState,
-  (state: GridFormState) => {
-    console.warn(state);
-    return state?.gridFormData;
-  }
+  (state: GridFormState) => state?.gridFormData
 );

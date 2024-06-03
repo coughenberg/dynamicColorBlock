@@ -1,7 +1,10 @@
 <button
   (click)="givePlacement()"
-  style="padding: 3em"
+  class="ripple-button"
   [ngStyle]="{
-    'background-color': clicked || isSquareEnabled ? rippleColor : baseColor
+    'background-color': clicked || isSquareEnabled ? rippleColor : baseColor,
+    border: hasBorder ? 1 : 0,
+    height: blockHeight,
+    width: blockWidth,
   }"
 ></button>

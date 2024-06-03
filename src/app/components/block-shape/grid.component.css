@@ -1,3 +1,11 @@
 .grid-info {
   font-size: 65px;
 }
+
+.grid {
+  border: solid black 1px;
+  width: 60em;
+  .grid-row {
+    margin-bottom: -0.25em;
+  }
+}
