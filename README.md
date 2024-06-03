@@ -1,3 +1,3 @@
 # DynamicColorBlock
 
-A square with a bunch of blocks inside of it to dynamically make color
+A square with dynamic blocks inside of it to add a ripple effect when selected

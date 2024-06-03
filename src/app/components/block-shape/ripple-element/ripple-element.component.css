@@ -1,10 +1,4 @@
-.rainbow-button {
-    font-size: 4em;
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-    /* -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
-}
-
-.blue-button {
-    background-color: white;
+.ripple-button {
+  margin: 0;
+  padding: 0;
 }

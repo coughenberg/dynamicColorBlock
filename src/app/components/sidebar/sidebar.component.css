@@ -3,10 +3,10 @@
   overflow-y: hidden;
 
   .drawer {
-    height: 30em;
+    height: 40em;
   }
   .drawer-content {
-    height: 30em;
+    height: 40em;
     width: 8em;
   }
 }
