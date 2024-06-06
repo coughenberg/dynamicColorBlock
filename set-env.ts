@@ -1,13 +1,20 @@
-const { writeFile } = require('fs');
+const { writeFile, existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 const dotenv = require('dotenv');
 
 // Load .env file
 dotenv.config();
 
-// Set environment variables
-const targetPath = join(__dirname, 'src/environments/environment.ts');
+// Create folder if it does not exist
+const folderPath = 'src/environments';
+if (!existsSync(folderPath)) {
+  mkdirSync(folderPath, { recursive: true });
+}
 
+// Create file path
+const targetPath = join(__dirname, `${folderPath}/environment.ts`);
+
+// Set environment variables
 const envConfigFile = `export const environment = {
   dev: '${process.env['IS_DEV']}',
   SPOTIFY_CLIENT_ID: '${process.env['SPOTIFY_CLIENT_ID']}',
