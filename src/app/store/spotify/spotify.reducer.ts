@@ -4,6 +4,9 @@ import {
   authenticateSpotifyToken,
   authenticateSpotifyTokenFailure,
   authenticateSpotifyTokenSuccess,
+  loginSpotifyUserToken,
+  loginSpotifyUserTokenFailure,
+  loginSpotifyUserTokenSuccess,
 } from './spotify.actions';
 
 export interface SpotifyState {
@@ -29,6 +32,19 @@ export const spotifyReducer = createReducer(
     auth: { ...auth, error: undefined },
   })),
   on(authenticateSpotifyTokenFailure, (state, { error }) => ({
+    ...state,
+    auth: {
+      access_token: undefined,
+      token_type: undefined,
+      expires_in: undefined,
+      error,
+    },
+  })),
+  on(loginSpotifyUserTokenSuccess, (state, { auth }) => ({
+    ...state,
+    auth: { ...auth, error: undefined },
+  })),
+  on(loginSpotifyUserTokenFailure, (state, { error }) => ({
     ...state,
     auth: {
       access_token: undefined,

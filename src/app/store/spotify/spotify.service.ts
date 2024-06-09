@@ -10,20 +10,52 @@ export class SpotifyService {
   baseUrl = 'https://accounts.spotify.com/api';
   constructor(private http: HttpClient) {}
 
+  getUserAuthToken(authToken: string): { Authorization: string } {
+    return {
+      Authorization: `Bearer ${authToken}`,
+    };
+  }
+
   getAuthToken() {
     const body = new HttpParams()
       .set('client_id', environment.SPOTIFY_CLIENT_ID)
       .set('client_secret', environment.SPOTIFY_CLIENT_SECRET)
       .set('grant_type', 'client_credentials');
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+
     return this.http.post<SpotifyAuth>(
       `${this.baseUrl}/token`,
       body.toString(),
       {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
+        headers,
       }
     );
+  }
+
+  getLoginUserToken(code: string) {
+    const body = new HttpParams()
+      .set('grant_type', 'authorization_code')
+      .set('code', code)
+      .set('redirect_uri', environment.REDIRECT_URI)
+      .set('client_id', environment.SPOTIFY_CLIENT_ID)
+      .set('client_secret', environment.SPOTIFY_CLIENT_SECRET);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+
+    return this.http.post(`${this.baseUrl}/token`, body, {
+      headers,
+    });
+  }
+
+  getCurrentlyPlaying(authToken:string) {
+    const auth = this.getUserAuthToken(authToken);
+    return this.http.get(`${this.baseUrl}/me/player/currently-playing`, {
+      headers: {},
+    });
   }
 }
