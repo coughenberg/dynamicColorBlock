@@ -43,7 +43,8 @@ export class SpotifyEffects {
         tap(() => {
           const clientId = environment.SPOTIFY_CLIENT_ID;
           const redirectUri = environment.REDIRECT_URI;
-          const scope = 'user-read-private user-read-email user-read-currently-playing';
+          const scope =
+            'user-read-private user-read-email user-read-currently-playing';
           const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(
             scope
           )}&redirect_uri=${encodeURIComponent(redirectUri)}`;
@@ -58,8 +59,8 @@ export class SpotifyEffects {
       ofType(handleUserAuthToken),
       mergeMap(({ code }) =>
         this.spotifyService.getLoginUserToken(code).pipe(
-          map(response => loginSpotifyUserTokenSuccess({auth: response})),
-          catchError(error => of(loginSpotifyUserTokenFailure({ error })))
+          map((response) => loginSpotifyUserTokenSuccess({ auth: response })),
+          catchError((error) => of(loginSpotifyUserTokenFailure({ error })))
         )
       )
     )
@@ -91,7 +92,7 @@ export class SpotifyEffects {
   getCurrentlyPlaying$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getCurrentlyPlaying),
-      mergeMap(({authToken}) =>
+      mergeMap(({ authToken }) =>
         this.spotifyService.getCurrentlyPlaying(authToken).pipe(
           map((auth) => authenticateSpotifyTokenSuccess({ auth })),
           catchError((error) => of(authenticateSpotifyTokenFailure({ error })))

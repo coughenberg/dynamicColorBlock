@@ -6,5 +6,10 @@ export const selectSpotifyState =
 
 export const selectSpotifyAuth = createSelector(
   selectSpotifyState,
-  (state: SpotifyState) => state?.spotify.auth
+  (state: SpotifyState) => state?.spotify?.auth
+);
+
+export const selectSpotifyAuthToken = createSelector(
+  selectSpotifyState,
+  (state: SpotifyState) => state?.spotify?.token
 );

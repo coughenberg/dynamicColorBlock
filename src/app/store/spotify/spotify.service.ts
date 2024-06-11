@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
 })
 export class SpotifyService {
   baseUrl = 'https://accounts.spotify.com/api';
+
+  serverBaseUrl = 'http://localhost:3000'
   constructor(private http: HttpClient) {}
 
   getUserAuthToken(authToken: string): { Authorization: string } {
@@ -52,10 +54,13 @@ export class SpotifyService {
     });
   }
 
-  getCurrentlyPlaying(authToken:string) {
+  getCurrentlyPlaying(authToken: string) {
     const auth = this.getUserAuthToken(authToken);
-    return this.http.get(`${this.baseUrl}/me/player/currently-playing`, {
-      headers: {},
+
+    const params = new HttpParams().set('token', authToken);
+
+    return this.http.get(`${this.serverBaseUrl}/currently-playing`, {
+      params,
     });
   }
 }
