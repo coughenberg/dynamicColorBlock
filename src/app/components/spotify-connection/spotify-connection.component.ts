@@ -3,16 +3,17 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { SpotifyState } from '../../store/spotify/spotify.reducer';
+import { SpotifyAuthState } from '../../store/spotify-auth/spotify-auth.reducer';
 import { Store } from '@ngrx/store';
 import {
-  getCurrentlyPlaying,
   handleUserAuthToken,
   loginSpotifyUserToken,
-} from '../../store/spotify/spotify.actions';
+} from '../../store/spotify-auth/spotify-auth.actions';
 import { ActivatedRoute } from '@angular/router';
-import { selectSpotifyAuthToken } from '../../store/spotify/spotify.selectors';
+import { selectSpotifyAuthToken } from '../../store/spotify-auth/spotify-auth.selectors';
 import { Observable } from 'rxjs';
+import { getCurrentlyPlaying } from '../../store/spotify/spotify.actions';
+import { SpotifyState } from '../../store/spotify/spotify.reducer';
 
 @Component({
   selector: 'app-spotify-connection',
@@ -26,6 +27,7 @@ export class SpotifyConnectionComponent implements OnInit {
   code?: string;
 
   constructor(
+    private storeAuth: Store<{ spotifyAuth: SpotifyAuthState }>,
     private store: Store<{ spotify: SpotifyState }>,
     private route: ActivatedRoute
   ) {}

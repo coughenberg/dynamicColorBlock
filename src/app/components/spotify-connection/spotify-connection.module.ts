@@ -1,4 +1,4 @@
-import { SpotifyEffects } from './../../store/spotify/spotify.effects';
+import { SpotifyAuthEffects } from '../../store/spotify-auth/spotify-auth.effects';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,8 +6,10 @@ import { MatInputModule } from '@angular/material/input';
 
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
-import { spotifyReducer } from '../../store/spotify/spotify.reducer';
+import { spotifyAuthReducer } from '../../store/spotify-auth/spotify-auth.reducer';
 import { SpotifyConnectionComponent } from './spotify-connection.component';
+import { spotifyModuleReducers } from '../../store/reducers';
+import { SpotifyEffects } from '../../store/spotify/spotify.effects';
 
 @NgModule({
   declarations: [SpotifyConnectionComponent],
@@ -15,8 +17,8 @@ import { SpotifyConnectionComponent } from './spotify-connection.component';
     CommonModule,
     MatInputModule,
     MatButtonModule,
-    StoreModule.forFeature('spotify', spotifyReducer),
-    EffectsModule.forFeature(SpotifyEffects)
+    StoreModule.forFeature('spotifyModule', spotifyModuleReducers),
+    EffectsModule.forFeature(SpotifyAuthEffects, SpotifyEffects),
   ],
   exports: [SpotifyConnectionComponent],
   providers: [],

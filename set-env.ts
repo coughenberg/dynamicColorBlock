@@ -20,6 +20,7 @@ const envConfigFile = `export const environment = {
   SPOTIFY_CLIENT_ID: '${process.env['SPOTIFY_CLIENT_ID']}',
   SPOTIFY_CLIENT_SECRET: '${process.env['SPOTIFY_CLIENT_SECRET']}',
   REDIRECT_URI: '${process.env['REDIRECT_URI']}',
+  MUSIC_MICROSERVICE_URL: '${process.env['MUSIC_MICROSERVICE_URL']}',
 };`;
 
 writeFile(targetPath, envConfigFile, (err: any) => {

@@ -9,7 +9,7 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { StoreModule, provideStore } from '@ngrx/store';
-import { SpotifyEffects } from './store/spotify/spotify.effects';
+import { SpotifyAuthEffects } from './store/spotify-auth/spotify-auth.effects';
 import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideStore(),
-    provideEffects(SpotifyEffects),
+    provideEffects(SpotifyAuthEffects),
     provideHttpClient(),
     importProvidersFrom(StoreModule.forRoot({}), EffectsModule.forRoot([])),
   ],

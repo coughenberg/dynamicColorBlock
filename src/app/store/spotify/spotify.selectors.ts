@@ -4,12 +4,7 @@ import { SpotifyState } from './spotify.reducer';
 export const selectSpotifyState =
   createFeatureSelector<SpotifyState>('spotify');
 
-export const selectSpotifyAuth = createSelector(
+export const selectSpotifyCurrentSong = createSelector(
   selectSpotifyState,
-  (state: SpotifyState) => state?.spotify?.auth
-);
-
-export const selectSpotifyAuthToken = createSelector(
-  selectSpotifyState,
-  (state: SpotifyState) => state?.spotify?.token
+  (state: SpotifyState) => state?.currentSong
 );

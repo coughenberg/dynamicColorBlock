@@ -3,3 +3,7 @@ export interface SpotifyAuth {
   token_type?: string;
   expires_in?: number;
 }
+
+export interface SpotifySong {
+  
+}
